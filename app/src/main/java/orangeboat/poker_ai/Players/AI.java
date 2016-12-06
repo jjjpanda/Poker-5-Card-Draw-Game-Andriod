@@ -5,8 +5,13 @@ package orangeboat.poker_ai.Players;
  */
 //base
 public class AI{
-    private short bluffRate, responseTime ;
-    private int shortStackPoint; //number of big blinds
-    public AI(){
+    public short bluffRate, responseTime ;
+    public int shortStackPoint; //number of big blinds
+    public AI() {
+        bluffRate = 0;
+        responseTime = 0;
+        shortStackPoint = 0;
     }
+
+
 }
