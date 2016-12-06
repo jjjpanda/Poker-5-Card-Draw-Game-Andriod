@@ -3,6 +3,8 @@ package orangeboat.poker_ai.Threads;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
+import orangeboat.poker_ai.Display;
+
 /**
  * Created by jawpa on 12/6/2016.
  */
