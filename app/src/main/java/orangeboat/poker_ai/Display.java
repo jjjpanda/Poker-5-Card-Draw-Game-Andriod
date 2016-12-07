@@ -2,12 +2,16 @@ package orangeboat.poker_ai;
 
 import android.content.Context;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import orangeboat.poker_ai.Input.IMG;
 import orangeboat.poker_ai.Input.SFX;
+import orangeboat.poker_ai.Input.Touch;
 import orangeboat.poker_ai.Panels.PausePanel;
 import orangeboat.poker_ai.Panels.TablePanel;
 import orangeboat.poker_ai.Panels.TitlePanel;
@@ -26,6 +30,7 @@ public class Display extends SurfaceView implements SurfaceHolder.Callback{
     TitlePanel titlePanel;
     PausePanel pausePanel;
     int panelSwitch = 0;
+    Touch touch;
     public Display(Context context, DisplayMetrics m){
         super(context);
         getHolder().addCallback(this);
@@ -33,9 +38,12 @@ public class Display extends SurfaceView implements SurfaceHolder.Callback{
         mainThread = new MainThread(getHolder(), this);
 
         device = m;
+
+        titlePanel = new TitlePanel();
+        tablePanel = new TablePanel();
+        pausePanel = new PausePanel();
         imgloader = new IMG();
         sfxloader = new SFX();
-
     }
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
@@ -65,6 +73,34 @@ public class Display extends SurfaceView implements SurfaceHolder.Callback{
             retry = false;
         }
     }
+    public boolean onTouchEvent(MotionEvent event) {
+        touch = new Touch(event);
+        if (panelSwitch == 0) {
+            touch.checkTitle(titlePanel);
+            touch.toGameToggleInfo(tablePanel,pausePanel);
+            if (touch.switcher) {
+                panelSwitch = 1;
+                touch.switcher = false;
+            }
+        }
+        if (panelSwitch == 1) {
+            touch.checkGame(tablePanel);
+            touch.toGameToggleInfo(tablePanel, pausePanel);
+            if (touch.switcher) {
+                panelSwitch = 3;
+                touch.switcher = false;
+            }
+        }
+        if(panelSwitch == 2) {
+            touch.checkPause(pausePanel);
+            touch.toGameToggleInfo(tablePanel, pausePanel);
+            if (touch.switcher) {
+                panelSwitch = 1;
+                touch.switcher = false;
+            }
+        }
+        return true;
+    }
     public void update()
     {
         if(panelSwitch == 0)
@@ -73,7 +109,20 @@ public class Display extends SurfaceView implements SurfaceHolder.Callback{
             tablePanel.update();
         }
         if(tablePanel.gameEnded){
-            panelSwitch = 2;
+            panelSwitch = 0;
+        }
+    }
+    public void draw(Canvas canvas)
+    {
+        if(panelSwitch == 0)
+        {
+            titlePanel.draw(canvas);
+        }
+        else if(panelSwitch == 1) {
+            tablePanel.draw(canvas);
+        }
+        else if(panelSwitch == 2){
+            pausePanel.draw(canvas);
         }
     }
     public void newThread() {
