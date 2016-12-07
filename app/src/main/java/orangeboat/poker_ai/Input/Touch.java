@@ -15,7 +15,6 @@ public class Touch {
     MotionEvent event;
     int x, y;
     int pointerCount;
-    public int touchtriggerOn = 0;
     public Touch(MotionEvent event) {
         this.event = event;
         pointerCount = event.getPointerCount();
@@ -35,28 +34,9 @@ public class Touch {
                 System.out.println("Play button pressed");
                 switcher = true;
             }
-            else if(title.rectToggle.contains(x,y)){
-                System.out.println("TOGGLED");
-                if(title.touchOn){
-                    title.touchOn = false;
-                    touchtriggerOn = 1;
-                }
-                else{
-                    title.touchOn = true;
-                    touchtriggerOn = 2;
-                }
-            }
         }
     }
     public void toGameToggleInfo(TablePanel tablePanel, PausePanel pausePanel){
-        if(touchtriggerOn == 2) {
-            tablePanel.touchOn = 2;
-            pausePanel.toggle = 2;
-        }
-        if(touchtriggerOn == 1){
-            tablePanel.touchOn = 1;
-            pausePanel.toggle = 1;
-        }
     }
     public void checkPause(PausePanel pausePanel){
         int action = MotionEventCompat.getActionMasked(event);
@@ -65,24 +45,13 @@ public class Touch {
             if (pausePanel.rectResume.contains(x, y)) {
                 switcher = true;
             }
-            else if(pausePanel.rectToggle.contains(x,y)){
-                System.out.println("TOGGLED");
-                if(pausePanel.toggle == 2){
-                    pausePanel.toggle = 1;
-                    touchtriggerOn = 1;
-                }
-                else{
-                    pausePanel.toggle = 2;
-                    touchtriggerOn = 2;
-                }
-            }
         }
     }
     public void checkGame(TablePanel tablePanel) {
         int action = MotionEventCompat.getActionMasked(event);
         // FIRST TOUCH
         if (MotionEvent.ACTION_DOWN == action) {
-            if (tablePanel.pause.contains(x, y)) {
+            if (tablePanel.rectPause.contains(x, y)) {
                 switcher = true;
             }
             tablePanel.downTouch(x, y, event.getPointerId(event.getActionIndex()));
@@ -96,7 +65,7 @@ public class Touch {
         // SECOND TOUCH
         if(MotionEvent.ACTION_POINTER_DOWN == action)
         {
-            if (tablePanel.pause.contains(x, y)) {
+            if (tablePanel.rectPause.contains(x, y)) {
                 switcher = true;
             }
             tablePanel.downTouch(x, y, event.getPointerId(event.getActionIndex()));

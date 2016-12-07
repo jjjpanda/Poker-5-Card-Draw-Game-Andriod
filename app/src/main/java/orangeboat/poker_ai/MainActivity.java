@@ -63,9 +63,9 @@ public class MainActivity extends AppCompatActivity {
     public void onResume()
     {
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        int highScore = sharedPref.getInt("high score",0);
-        System.out.println(highScore);
-        display.tablePanel.setMoney(highScore);
+        int money = sharedPref.getInt("high score",0);
+        System.out.println(money);
+        display.tablePanel.setMoney(money);
         super.onResume();
     }
     @Override
@@ -74,6 +74,4 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         System.exit(0);
     }
-}
-
 }
