@@ -40,7 +40,7 @@ public class Display extends SurfaceView implements SurfaceHolder.Callback{
         device = m;
 
         titlePanel = new TitlePanel();
-        tablePanel = new TablePanel();
+        tablePanel = new TablePanel(context);
         pausePanel = new PausePanel();
         imgloader = new IMG(getResources(), device, tablePanel, titlePanel, pausePanel);
         sfxloader = new SFX();
@@ -87,12 +87,12 @@ public class Display extends SurfaceView implements SurfaceHolder.Callback{
             touch.checkGame(tablePanel);
             touch.toGameToggleInfo(tablePanel, pausePanel);
             if (touch.switcher) {
-                panelSwitch = 3;
+                panelSwitch = 2;
                 touch.switcher = false;
             }
         }
         if(panelSwitch == 2) {
-            touch.checkPause(pausePanel);
+            touch.checkPause(pausePanel, tablePanel);
             touch.toGameToggleInfo(tablePanel, pausePanel);
             if (touch.switcher) {
                 panelSwitch = 1;
@@ -103,17 +103,20 @@ public class Display extends SurfaceView implements SurfaceHolder.Callback{
     }
     public void update()
     {
+        if(tablePanel.gameEnded){
+            panelSwitch = 0;
+            tablePanel.load();
+        }
         if(panelSwitch == 0)
             titlePanel.update();
         else if(panelSwitch == 1) {
             tablePanel.update();
         }
-        if(tablePanel.gameEnded){
-            panelSwitch = 0;
-        }
+
     }
     public void draw(Canvas canvas)
     {
+        super.draw(canvas);
         if(panelSwitch == 0)
         {
             titlePanel.draw(canvas);

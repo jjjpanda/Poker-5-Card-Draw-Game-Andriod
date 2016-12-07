@@ -31,7 +31,13 @@ public class IMG {
         start();
     }
     public void start(){
-        temp = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources,R.drawable.playbutton1), BitmapFactory.decodeResource(resources, R.drawable.playbutton1).getWidth()/2, BitmapFactory.decodeResource(resources, R.drawable.playbutton1).getHeight()/2, true);
+        temp = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources,R.drawable.playbutton1), BitmapFactory.decodeResource(resources, R.drawable.playbutton1).getWidth()*2/5, BitmapFactory.decodeResource(resources, R.drawable.playbutton1).getHeight()*2/5, true);
         titlePanel.imgLoad(temp);
+        pausePanel.imgLoad(temp);
+        temp = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources,R.drawable.quitbutton), BitmapFactory.decodeResource(resources, R.drawable.quitbutton).getWidth()*2/3, BitmapFactory.decodeResource(resources, R.drawable.quitbutton).getHeight()*2/3, true);
+        pausePanel.imgLoad(temp);
+
+        temp = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources,R.drawable.pause), BitmapFactory.decodeResource(resources, R.drawable.pause).getWidth(), BitmapFactory.decodeResource(resources, R.drawable.pause).getHeight(), true);
+        tablePanel.imgLoad(temp);
     }
 }
