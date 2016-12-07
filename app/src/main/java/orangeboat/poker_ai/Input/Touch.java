@@ -38,12 +38,16 @@ public class Touch {
     }
     public void toGameToggleInfo(TablePanel tablePanel, PausePanel pausePanel){
     }
-    public void checkPause(PausePanel pausePanel){
+    public void checkPause(PausePanel pausePanel, TablePanel tablePanel){
         int action = MotionEventCompat.getActionMasked(event);
         if (MotionEvent.ACTION_DOWN == action) {
             System.out.println(x + " " + y);
             if (pausePanel.rectResume.contains(x, y)) {
                 switcher = true;
+            }
+            if (pausePanel.rectQuit.contains(x,y)){
+               tablePanel.gameEnded = true;
+               // switcher = true;
             }
         }
     }
