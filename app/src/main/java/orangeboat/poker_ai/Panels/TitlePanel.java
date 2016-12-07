@@ -27,7 +27,7 @@ public class TitlePanel {
 
     }
     public void draw(Canvas canvas) {
-
+        canvas.drawBitmap(imgloader.get(0),0,0,null);
     }
     public void imgLoad(Bitmap image) {imgloader.add(image);}
     public void sfxLoad(MediaPlayer sfx){ sfxloader.add(sfx);}
