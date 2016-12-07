@@ -42,7 +42,7 @@ public class Display extends SurfaceView implements SurfaceHolder.Callback{
         titlePanel = new TitlePanel();
         tablePanel = new TablePanel();
         pausePanel = new PausePanel();
-        imgloader = new IMG();
+        imgloader = new IMG(getResources(), device, tablePanel, titlePanel, pausePanel);
         sfxloader = new SFX();
     }
     @Override
