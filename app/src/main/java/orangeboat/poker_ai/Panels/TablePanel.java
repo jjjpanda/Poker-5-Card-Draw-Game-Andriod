@@ -19,6 +19,7 @@ import orangeboat.poker_ai.Display;
 public class TablePanel {
 
     Paint paint = new Paint();
+    public int counter;
 
     Vibrator v;
     ArrayList<Bitmap> imgloader = new ArrayList<>();
@@ -31,10 +32,10 @@ public class TablePanel {
     public boolean gameEnded;
 
     public int money;
-
-    public int counter;
-
     public void setMoney(int money) {this.money = money;}
+
+    public int gameRound; //0- preflop, 1- flop, 2-turn, 3- river
+    public int dealerPosition; //0- user, 1- AI to the left, and so on.
 
     public TablePanel(Context context){
         v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
@@ -52,11 +53,30 @@ public class TablePanel {
         pausebuttonX = pauseButton.getWidth();
         pausebuttonY = pauseButton.getHeight();
         rectPause = new Rect( x, y, x+pausebuttonX, y+pausebuttonY);
+
+        dealerPosition = (int)(Math.random() * 6); // 0 to 5
+        gameRound = 0;
     }
     public void update(){
         counter++;
         if(counter % 30 == 0){
             v.vibrate(150);
+        }
+        if (gameRound == 0) {
+            //preflop
+            gameRound++;
+        }
+        else if( gameRound == 1){
+            //flop
+            gameRound++;
+        }
+        else if( gameRound == 2){
+            //turn
+            gameRound++;
+        }
+        else if( gameRound == 3){
+            //river
+            gameRound = 0;
         }
     }
     public void draw(Canvas canvas){

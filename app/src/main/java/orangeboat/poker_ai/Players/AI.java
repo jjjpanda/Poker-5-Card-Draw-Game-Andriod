@@ -12,6 +12,19 @@ public class AI{
         responseTime = 0;
         shortStackPoint = 0;
     }
-
+    public void update(int gameRound, int dealerPosition){
+        if (gameRound == 0) {
+            //preflop
+        }
+        else if( gameRound == 1){
+            //flop
+        }
+        else if( gameRound == 2){
+            //turn
+        }
+        else if( gameRound == 3){
+            //river
+        }
+    }
 
 }
