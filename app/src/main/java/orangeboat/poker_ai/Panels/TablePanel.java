@@ -57,7 +57,7 @@ public class TablePanel {
         py = 0;
         rectPause = new Rect( px, py, px+pausebuttonX, py +pausebuttonY);
         cardwidth = cardloader.get(0).getWidth();
-        communityHeight = Display.device.heightPixels/10;
+        communityHeight = Display.device.heightPixels/13;
         flopx = Display.device.widthPixels/2-cardwidth*5/2;
         turnx = Display.device.widthPixels/2+ cardwidth/2;
         riverx = Display.device.widthPixels/2+ cardwidth*3/2;
