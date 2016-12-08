@@ -29,7 +29,7 @@ public class IMG {
         start();
     }
     public void start(){
-        temp = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources,R.drawable.playbutton), BitmapFactory.decodeResource(resources, R.drawable.playbutton).getWidth()*2/5, BitmapFactory.decodeResource(resources, R.drawable.playbutton).getHeight()*2/5, true);
+        temp = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources,R.drawable.playbutton), BitmapFactory.decodeResource(resources, R.drawable.playbutton).getWidth()*3/2, BitmapFactory.decodeResource(resources, R.drawable.playbutton).getHeight()*3/2, true);
         titlePanel.imgLoad(temp);
         pausePanel.imgLoad(temp);
         temp = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources,R.drawable.quitbutton), BitmapFactory.decodeResource(resources, R.drawable.quitbutton).getWidth()*2/3, BitmapFactory.decodeResource(resources, R.drawable.quitbutton).getHeight()*2/3, true);
@@ -37,7 +37,7 @@ public class IMG {
 
         temp = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources,R.drawable.pause), BitmapFactory.decodeResource(resources, R.drawable.pause).getWidth()/2, BitmapFactory.decodeResource(resources, R.drawable.pause).getHeight()/2, true);
         tablePanel.imgLoad(temp);
-        temp = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources,R.drawable.s2), BitmapFactory.decodeResource(resources, R.drawable.s2).getWidth(), BitmapFactory.decodeResource(resources, R.drawable.s2).getHeight(), true);
+        temp = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources,R.drawable.s2), BitmapFactory.decodeResource(resources, R.drawable.s2).getWidth()*4/5, BitmapFactory.decodeResource(resources, R.drawable.s2).getHeight()*4/5, true);
         tablePanel.cardLoad(temp);
     }
 }
