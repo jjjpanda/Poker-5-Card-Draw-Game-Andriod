@@ -39,5 +39,7 @@ public class IMG {
 
         temp = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources,R.drawable.pause), BitmapFactory.decodeResource(resources, R.drawable.pause).getWidth()/2, BitmapFactory.decodeResource(resources, R.drawable.pause).getHeight()/2, true);
         tablePanel.imgLoad(temp);
+        temp = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources,R.drawable.S2), BitmapFactory.decodeResource(resources, R.drawable.pause).getWidth()/2, BitmapFactory.decodeResource(resources, R.drawable.pause).getHeight()/2, true);
+
     }
 }
