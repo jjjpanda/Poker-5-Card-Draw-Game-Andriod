@@ -27,9 +27,10 @@ public class TablePanel {
     ArrayList<MediaPlayer> sfxloader = new ArrayList<>();
 
     public Bitmap pauseButton;
-    private int x, y, pausebuttonX, pausebuttonY;
+    private int px, py, pausebuttonX, pausebuttonY;
     public Rect rectPause;
 
+    public int flopx, turnx, riverx, communityHeight, cardwidth;
     public boolean gameEnded;
 
     public int money;
@@ -52,10 +53,14 @@ public class TablePanel {
 
         pausebuttonX = pauseButton.getWidth();
         pausebuttonY = pauseButton.getHeight();
-        x = (int) (Display.device.widthPixels-pausebuttonX);
-        y = 0;
-        rectPause = new Rect( x, y, x+pausebuttonX, y+pausebuttonY);
-
+        px = (int) (Display.device.widthPixels-pausebuttonX);
+        py = 0;
+        rectPause = new Rect( px, py, px+pausebuttonX, py +pausebuttonY);
+        cardwidth = cardloader.get(0).getWidth();
+        communityHeight = Display.device.heightPixels/10;
+        flopx = Display.device.widthPixels/2-cardwidth*5/2;
+        turnx = Display.device.widthPixels/2+ cardwidth/2;
+        riverx = Display.device.widthPixels/2+ cardwidth*3/2;
         dealerPosition = (int)(Math.random() * 6); // 0 to 5
         gameRound = 0;
     }
@@ -85,17 +90,29 @@ public class TablePanel {
     public void draw(Canvas canvas){
         canvas.drawText(""+counter, 100,100,paint);
         canvas.drawText("Game Screen" , 200,300,paint);
-        canvas.drawBitmap(pauseButton, x, y, null);
+        canvas.drawBitmap(pauseButton, px, py, null);
         if (gameRound == 0) {
             //preflop
         }
         else if( gameRound == 1){
+            canvas.drawBitmap(cardloader.get(0), flopx, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(0), flopx+cardwidth, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(0), flopx+cardwidth*2, communityHeight, null);
             //flop
         }
         else if( gameRound == 2){
+            canvas.drawBitmap(cardloader.get(0), flopx, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(0), flopx+cardwidth, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(0), flopx+cardwidth*2, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(0), turnx, communityHeight, null);
             //turn
         }
         else if( gameRound == 3){
+            canvas.drawBitmap(cardloader.get(0), flopx, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(0), flopx+cardwidth, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(0), flopx+cardwidth*2, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(0), turnx, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(0), riverx, communityHeight, null);
             //river
         }
     }
