@@ -37,7 +37,7 @@ public class IMG {
         temp = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources,R.drawable.quitbutton), BitmapFactory.decodeResource(resources, R.drawable.quitbutton).getWidth()*2/3, BitmapFactory.decodeResource(resources, R.drawable.quitbutton).getHeight()*2/3, true);
         pausePanel.imgLoad(temp);
 
-        temp = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources,R.drawable.pause), BitmapFactory.decodeResource(resources, R.drawable.pause).getWidth(), BitmapFactory.decodeResource(resources, R.drawable.pause).getHeight(), true);
+        temp = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources,R.drawable.pause), BitmapFactory.decodeResource(resources, R.drawable.pause).getWidth()/2, BitmapFactory.decodeResource(resources, R.drawable.pause).getHeight()/2, true);
         tablePanel.imgLoad(temp);
     }
 }

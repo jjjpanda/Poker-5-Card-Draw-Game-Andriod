@@ -23,6 +23,7 @@ public class TablePanel {
 
     Vibrator v;
     ArrayList<Bitmap> imgloader = new ArrayList<>();
+    ArrayList<Bitmap> cardloader = new ArrayList<>();
     ArrayList<MediaPlayer> sfxloader = new ArrayList<>();
 
     public Bitmap pauseButton;
@@ -48,10 +49,11 @@ public class TablePanel {
         gameEnded = false;
 
         pauseButton = imgloader.get(0);
-        x = (int) (Display.device.widthPixels/2);
-        y = (int) ( Display.device.heightPixels/3);
+
         pausebuttonX = pauseButton.getWidth();
         pausebuttonY = pauseButton.getHeight();
+        x = (int) (Display.device.widthPixels-pausebuttonX);
+        y = 0;
         rectPause = new Rect( x, y, x+pausebuttonX, y+pausebuttonY);
 
         dealerPosition = (int)(Math.random() * 6); // 0 to 5
@@ -62,6 +64,7 @@ public class TablePanel {
         if(counter % 30 == 0){
             v.vibrate(150);
         }
+
         if (gameRound == 0) {
             //preflop
             gameRound++;
@@ -83,8 +86,21 @@ public class TablePanel {
         canvas.drawText(""+counter, 100,100,paint);
         canvas.drawText("Game Screen" , 200,300,paint);
         canvas.drawBitmap(pauseButton, x, y, null);
+        if (gameRound == 0) {
+            //preflop
+        }
+        else if( gameRound == 1){
+            //flop
+        }
+        else if( gameRound == 2){
+            //turn
+        }
+        else if( gameRound == 3){
+            //river
+        }
     }
     public void imgLoad(Bitmap image) {imgloader.add(image);}
+    public void cardLoad(Bitmap image) {cardloader.add(image);}
     public void sfxLoad(MediaPlayer sfx){ sfxloader.add(sfx);}
     public void downTouch(int x, int y, int pointerNumber) {
 
