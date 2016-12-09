@@ -20,8 +20,6 @@ public class Normal extends AI{
     public void update(int gameRound, int dealerPosition){
         if (gameRound == 0) {
             //preflop
-            a.deal('T', 'H');
-            b.deal('9', 'S');
             if( evaluateCards(a,b, gameRound, money) ){
                 //do action
             }

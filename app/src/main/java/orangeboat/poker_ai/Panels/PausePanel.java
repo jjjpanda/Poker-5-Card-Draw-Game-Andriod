@@ -33,22 +33,22 @@ public class PausePanel {
         paint.setTextSize(100f);
 
         resumeButton = imgloader.get(0);
-        rx = (int) (Display.device.widthPixels/4);
-        ry = (int) ( Display.device.heightPixels/1.3);
         resumebuttonX = resumeButton.getWidth();
         resumebuttonY = resumeButton.getHeight();
+        rx = (int) (Display.device.widthPixels/2) - resumebuttonX/2;
+        ry = (int) ( Display.device.heightPixels/3.9);
         rectResume = new Rect(rx, ry, rx +resumebuttonX, ry+resumebuttonY);
 
         quitButton = imgloader.get(1);
-        qx = (int) (Display.device.widthPixels/1.5);
-        qy = (int) ( Display.device.heightPixels/1.9);
         quitbuttonX = quitButton.getWidth();
         quitbuttonY = quitButton.getHeight();
+        qx = (int) (Display.device.widthPixels/2) - quitbuttonX/2;
+        qy = (int) ( Display.device.heightPixels/1.9);
         rectQuit = new Rect(qx, qy, qx+quitbuttonX, qy+quitbuttonY);
     }
     public void draw(Canvas canvas) {
 
-        canvas.drawText("Pause Screen", 100,100, paint);
+        canvas.drawText("Pause Screen", Display.device.widthPixels/2 ,Display.device.heightPixels/11, paint);
 
         canvas.drawBitmap(resumeButton, rx,ry, null);
         canvas.drawBitmap(quitButton,qx,qy,null);

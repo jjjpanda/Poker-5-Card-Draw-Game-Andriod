@@ -21,7 +21,7 @@ public class TitlePanel {
     ArrayList<Bitmap> imgloader = new ArrayList<>();
     ArrayList<MediaPlayer> sfxloader = new ArrayList<>();
     Bitmap playButton, title, wallet;
-    private int x, y, playbuttonX, playbuttonY;
+    private int px, py, playbuttonX, playbuttonY;
     public Rect rectPlay;
 
     public TitlePanel(){
@@ -36,18 +36,17 @@ public class TitlePanel {
 
         playbuttonX = playButton.getWidth();
         playbuttonY = playButton.getHeight();
-        x = (int) (Display.device.widthPixels/2);
-        y = (int) ( Display.device.heightPixels/1.3);
-
-        rectPlay = new Rect( x, y, x+playbuttonX, y+playbuttonY);
+        px = (int) (Display.device.widthPixels/2) - playbuttonX/2;
+        py = (int) ( Display.device.heightPixels/4.2);
+        rectPlay = new Rect(px, py, px +playbuttonX, py +playbuttonY);
 
     }
     public void update(){
 
     }
     public void draw(Canvas canvas) {
-        canvas.drawText("Title", 100, 100, paint);
-        canvas.drawBitmap(playButton,x,y,null);
+        canvas.drawText("Poker", Display.device.widthPixels/2, Display.device.heightPixels/11, paint);
+        canvas.drawBitmap(playButton, px, py,null);
     }
     public void imgLoad(Bitmap image) {imgloader.add(image);}
     public void sfxLoad(MediaPlayer sfx){ sfxloader.add(sfx);}
