@@ -8,8 +8,10 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.os.Vibrator;
+import android.support.annotation.ArrayRes;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import orangeboat.poker_ai.Display;
 import orangeboat.poker_ai.Players.AI;
@@ -26,17 +28,24 @@ public class TablePanel {
     Paint paint = new Paint();
     public int counter;
 
+    Random rand = new Random(System.currentTimeMillis());
     Vibrator v;
     ArrayList<Bitmap> imgloader = new ArrayList<>();
-    ArrayList<Bitmap> cardloader = new ArrayList<>();
+    ArrayList<Bitmap> cardloader = new ArrayList<>(); //C 0-12, H 13-25, S 26-38,  D 39-51 , A-K
     ArrayList<MediaPlayer> sfxloader = new ArrayList<>();
+    ArrayList<Integer> cardsDealt = new ArrayList<>();
 
     public Bitmap pauseButton;
     private int px, py, pausebuttonX, pausebuttonY;
     public Rect rectPause;
 
-    public int flopx, turnx, riverx, communityHeight, cardwidth;
+    public int flopx, turnx, riverx, communityHeight, pocketHeight, cardwidth, pocket1, pocket2;
+    public int flop1, flop2, flop3, turn, river;
+    public int card1, card2;
+    public int temp;
     public boolean gameEnded;
+
+    public int deviceWidth, deviceHeight;
 
     public int money;
     public void setMoney(int money) {this.money = money;}
@@ -55,6 +64,8 @@ public class TablePanel {
         paint.setTextSize(100f);
         counter = 0;
 
+        deviceHeight = Display.device.heightPixels;
+        deviceWidth = Display.device.widthPixels;
         gameEnded = false;
 
         player1 = new Normal();
@@ -66,14 +77,17 @@ public class TablePanel {
 
         pausebuttonX = pauseButton.getWidth();
         pausebuttonY = pauseButton.getHeight();
-        px = (int) (Display.device.widthPixels-pausebuttonX);
+        px = (int) (deviceWidth-pausebuttonX);
         py = 0;
         rectPause = new Rect( px, py, px+pausebuttonX, py +pausebuttonY);
         cardwidth = cardloader.get(0).getWidth();
-        communityHeight = Display.device.heightPixels/13;
-        flopx = Display.device.widthPixels/2-cardwidth*5/2;
-        turnx = Display.device.widthPixels/2+ cardwidth/2;
-        riverx = Display.device.widthPixels/2+ cardwidth*3/2;
+        pocketHeight = (int) (deviceHeight/1.3);
+        pocket1 =  deviceWidth/2;
+        pocket2 =  deviceWidth/2 - cardwidth;
+        communityHeight = deviceHeight/13;
+        flopx = deviceWidth/2-cardwidth*5/2;
+        turnx = deviceWidth/2+ cardwidth/2;
+        riverx = deviceWidth/2+ cardwidth*3/2;
         dealerPosition = (int)(Math.random() * 6); // 0 to 5
         gameRound = 0;
     }
@@ -84,6 +98,8 @@ public class TablePanel {
         }
 
         if (gameRound == 0) {
+            card1= deal();
+            card2 = deal();
             switch(dealerPosition){
                 case 0:
                     player1.takeSmallBlind();
@@ -120,6 +136,8 @@ public class TablePanel {
         }
         else if( gameRound == 3){
             //river
+            card1 = 52;
+            card2 = 52;
             gameRound = 0;
         }
     }
@@ -131,26 +149,42 @@ public class TablePanel {
             //preflop
         }
         else if( gameRound == 1){
-            canvas.drawBitmap(cardloader.get(0), flopx, communityHeight, null);
-            canvas.drawBitmap(cardloader.get(0), flopx+cardwidth, communityHeight, null);
-            canvas.drawBitmap(cardloader.get(0), flopx+cardwidth*2, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), flopx, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), flopx+cardwidth, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), flopx+cardwidth*2, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(card1), pocket1, pocketHeight, null);
+            canvas.drawBitmap(cardloader.get(card2), pocket2, pocketHeight, null);
             //flop
         }
         else if( gameRound == 2){
-            canvas.drawBitmap(cardloader.get(0), flopx, communityHeight, null);
-            canvas.drawBitmap(cardloader.get(0), flopx+cardwidth, communityHeight, null);
-            canvas.drawBitmap(cardloader.get(0), flopx+cardwidth*2, communityHeight, null);
-            canvas.drawBitmap(cardloader.get(0), turnx, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), flopx, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), flopx+cardwidth, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), flopx+cardwidth*2, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), turnx, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(card1), pocket1, pocketHeight, null);
+            canvas.drawBitmap(cardloader.get(card2), pocket2, pocketHeight, null);
             //turn
         }
         else if( gameRound == 3){
-            canvas.drawBitmap(cardloader.get(0), flopx, communityHeight, null);
-            canvas.drawBitmap(cardloader.get(0), flopx+cardwidth, communityHeight, null);
-            canvas.drawBitmap(cardloader.get(0), flopx+cardwidth*2, communityHeight, null);
-            canvas.drawBitmap(cardloader.get(0), turnx, communityHeight, null);
-            canvas.drawBitmap(cardloader.get(0), riverx, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), flopx, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), flopx+cardwidth, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), flopx+cardwidth*2, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), turnx, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), riverx, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(card1), pocket1, pocketHeight, null);
+            canvas.drawBitmap(cardloader.get(card2), pocket2, pocketHeight, null);
             //river
         }
+    }
+    public int deal(){
+        int temp = rand.nextInt(52);
+        for (Integer dealt : cardsDealt){
+            if (dealt == temp){
+                temp = rand.nextInt(52);
+            }
+        }
+        cardsDealt.add(temp);
+        return temp;
     }
     public void imgLoad(Bitmap image) {imgloader.add(image);}
     public void cardLoad(Bitmap image) {cardloader.add(image);}
