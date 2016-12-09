@@ -18,4 +18,12 @@ public class AI{
         shortStackPoint = 0;
         money = 0;
     }
+    public void update(int gameRound, int dealerPosition){
+    }
+    public void takeBigBlind(){
+
+    }
+    public void takeSmallBlind(){
+
+    }
 }

@@ -16,6 +16,7 @@ public class Normal extends AI{
         super.responseTime = 0;
         super.shortStackPoint = 0;
     }
+    @Override
     public void update(int gameRound, int dealerPosition){
         if (gameRound == 0) {
             //preflop
