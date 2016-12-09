@@ -12,6 +12,11 @@ import android.os.Vibrator;
 import java.util.ArrayList;
 
 import orangeboat.poker_ai.Display;
+import orangeboat.poker_ai.Players.AI;
+import orangeboat.poker_ai.Players.Fish;
+import orangeboat.poker_ai.Players.Normal;
+import orangeboat.poker_ai.Players.Smart;
+import orangeboat.poker_ai.Players.Stupid;
 
 /**
  * Created by jawpa on 12/6/2016.
@@ -39,6 +44,9 @@ public class TablePanel {
     public int gameRound; //0- preflop, 1- flop, 2-turn, 3- river
     public int dealerPosition; //0- user, 1- AI to the left, and so on.
 
+    public AI player1, player2, player3, player4;
+    public AI players[] = new AI[4];
+
     public TablePanel(Context context){
         v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
     }
@@ -48,6 +56,11 @@ public class TablePanel {
         counter = 0;
 
         gameEnded = false;
+
+        player1 = new Normal();
+        player2 = new Stupid();
+        player3 = new Fish();
+        player4 = new Smart();
 
         pauseButton = imgloader.get(0);
 
@@ -71,6 +84,29 @@ public class TablePanel {
         }
 
         if (gameRound == 0) {
+            switch(dealerPosition){
+                case 0:
+                    player1.takeSmallBlind();
+                    player2.takeBigBlind();
+
+                    //user input
+                    player1.update(gameRound, 0);
+                    player2.update(gameRound, 0);
+                    player3.update(gameRound, 0);
+                    player4.update(gameRound, 0);
+                    break;
+                case 1:
+                    player2.takeSmallBlind();
+                    player3.takeBigBlind();
+
+                    player4.update(gameRound, 0);
+                    //user input
+                    player1.update(gameRound, 0);
+                    player2.update(gameRound, 0);
+                    player3.update(gameRound, 0);
+                    break;
+            }
+
             //preflop
             gameRound++;
         }
