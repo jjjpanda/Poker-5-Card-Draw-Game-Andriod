@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         int money = sharedPref.getInt("money",0);
         System.out.println(money);
         display = new Display(this, displayMetrics);
-        display.tablePanel.setMoney(money);
+        display.tablePanel.setWallet(money);
         setContentView(display);
     }
     @Override
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         int money = sharedPref.getInt("high score",0);
         System.out.println(money);
-        display.tablePanel.setMoney(money);
+        display.tablePanel.setWallet(money);
         super.onResume();
     }
     @Override

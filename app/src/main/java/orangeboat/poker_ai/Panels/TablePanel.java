@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.os.Vibrator;
-import android.support.annotation.ArrayRes;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -26,7 +25,6 @@ import orangeboat.poker_ai.Players.Stupid;
 public class TablePanel {
 
     Paint paint = new Paint();
-    public int counter;
 
     Random rand = new Random(System.currentTimeMillis());
     Vibrator v;
@@ -72,7 +70,6 @@ public class TablePanel {
     public void load(){
         paint.setColor(Color.WHITE);
         paint.setTextSize(100f);
-        counter = 0;
 
         card1 = 52;
         card2 = 52;
@@ -146,10 +143,7 @@ public class TablePanel {
         }
         else playersFinished = false;
 
-        counter++;
-        if(counter % 30 == 0){
-            //v.vibrate(150);
-        }
+        money++;
 
         if (gameRound == 0) {
             if (!blindsFininshed) {
@@ -247,7 +241,7 @@ public class TablePanel {
         }
     }
     public void draw(Canvas canvas){
-        canvas.drawText(""+counter, 100,100,paint);
+        canvas.drawText(""+money, 100,100,paint);
         canvas.drawText("Game Screen" , 200,300,paint);
         canvas.drawBitmap(pauseButton, px, py, null);
         if(chipUIShown){
@@ -352,6 +346,11 @@ public class TablePanel {
         blindsFininshed = true;
         bettingFinished = false;
     }
+    public void setWallet(int num)
+    {
+        money = num;
+    }
+
     public void betting(int gameRound){
         if(gameRound == 0) {
             switch (dealerPosition) {
