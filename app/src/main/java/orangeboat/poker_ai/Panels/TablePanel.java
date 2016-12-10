@@ -53,7 +53,7 @@ public class TablePanel {
 
     public int deviceWidth, deviceHeight;
 
-    public int money;
+    public int money, pot, forwardBet, bigblind;
     public void setMoney(int money) {this.money = money;}
 
     public int gameRound; //0- preflop, 1- flop, 2-turn, 3- river
@@ -68,6 +68,10 @@ public class TablePanel {
         v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
     }
     public void load(){
+        if(money <= 100){
+            money = 1000;
+        }
+        bigblind = ( money - (money%100) ) / 100;
         paint.setColor(Color.WHITE);
         paint.setTextSize(100f);
 
@@ -133,8 +137,9 @@ public class TablePanel {
         flopx = deviceWidth/2-cardwidth*5/2;
         turnx = deviceWidth/2+ cardwidth/2;
         riverx = deviceWidth/2+ cardwidth*3/2;
-        //dealerPosition = rand.nextInt(6); // 0 to 5
-        dealerPosition = 0;
+
+        dealerPosition = rand.nextInt(6); // 0 to 5
+
         gameRound = 0;
     }
     public void update(){
@@ -143,7 +148,7 @@ public class TablePanel {
         }
         else playersFinished = false;
 
-        money++;
+        money--;
 
         if (gameRound == 0) {
             if (!blindsFininshed) {
@@ -239,10 +244,13 @@ public class TablePanel {
                 }
             }
         }
+        if(money <= 0){
+            gameEnded = true;
+        }
     }
     public void draw(Canvas canvas){
         canvas.drawText(""+money, 100,100,paint);
-        canvas.drawText("Game Screen" , 200,300,paint);
+        canvas.drawText(""+pot , 200,700,paint);
         canvas.drawBitmap(pauseButton, px, py, null);
         if(chipUIShown){
 
@@ -314,43 +322,47 @@ public class TablePanel {
         return temp;
     }
     public void takeBigBlind(){
-        money--;
-        money--;
+        money-= bigblind;
     }
     public void takeSmallBlind(){
-        money--;
+        money-= (bigblind/2);
     }
     public void blinds(){
         switch(dealerPosition){
             case 0:
-                player1.takeSmallBlind();
-                player2.takeBigBlind();
+                player1.takeSmallBlind(bigblind/2);
+                player2.takeBigBlind(bigblind);
                 break;
             case 1:
-                player2.takeSmallBlind();
-                player3.takeBigBlind();
+                player2.takeSmallBlind(bigblind/2);
+                player3.takeBigBlind(bigblind);
                 break;
             case 2:
-                player3.takeSmallBlind();
-                player4.takeBigBlind();
+                player3.takeSmallBlind(bigblind/2);
+                player4.takeBigBlind(bigblind);
                 break;
             case 3:
-                player4.takeSmallBlind();
+                player4.takeSmallBlind(bigblind/2);
                 takeBigBlind();
                 break;
             case 4:
                 takeSmallBlind();
-                player1.takeBigBlind();
+                player1.takeBigBlind(bigblind);
                 break;
         }
+        pot += (bigblind/2)+bigblind ;
         blindsFininshed = true;
         bettingFinished = false;
     }
     public void setWallet(int num)
     {
-        money = num;
+        if(num <= 100){
+            money = 1000;
+        }
+        else{
+            money = num;
+        }
     }
-
     public void betting(int gameRound){
         if(gameRound == 0) {
             switch (dealerPosition) {
