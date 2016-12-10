@@ -7,11 +7,13 @@ import orangeboat.poker_ai.Card;
  */
 //base
 public class AI{
-    public short bluffRate, responseTime ;
-    public int shortStackPoint; //number of big blinds
+    public short bluffRate;
+    public int shortStackPoint, responseTime = 600; //number of big blinds
     public int money;
+    public boolean finished;
     public Card a =  new Card();
     public Card b = new Card();
+
     public AI() {
         bluffRate = 0;
         responseTime = 0;

@@ -10,7 +10,7 @@ import orangeboat.poker_ai.Display;
  */
 public class MainThread extends Thread
 {
-    private int FPS = 10;
+    private int FPS = 30;
     private double averageFPS;
     private SurfaceHolder surfaceHolder;
     private Display display;
