@@ -9,7 +9,7 @@ import orangeboat.poker_ai.Card;
 public class AI{
     public short bluffRate;
     public int shortStackPoint, responseTime; //number of big blinds
-    public int money;
+    public int money, forwardBet;
     public boolean finished;
     public Card a =  new Card();
     public Card b = new Card();
@@ -22,10 +22,10 @@ public class AI{
     }
     public void update(int gameRound, int dealerPosition){
     }
-    public void takeBigBlind(){
-
+    public void takeBigBlind(int blind){
+        money -=blind;
     }
-    public void takeSmallBlind(){
-
+    public void takeSmallBlind(int blind){
+        money -= blind;
     }
 }
