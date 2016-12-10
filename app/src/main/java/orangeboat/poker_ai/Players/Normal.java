@@ -15,6 +15,7 @@ public class Normal extends AI{
         super.bluffRate = 0;
         super.responseTime = 0;
         super.shortStackPoint = 0;
+        responseTime = 60;
         finished = false;
     }
     @Override
@@ -33,7 +34,7 @@ public class Normal extends AI{
         else if( gameRound == 1 && !finished){
             //flop
             timePassed++;
-            if( timePassed == responseTime){
+            if( timePassed >= responseTime){
                 timePassed =0;
                 finished = true;
             }
