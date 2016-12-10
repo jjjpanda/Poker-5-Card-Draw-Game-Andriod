@@ -53,6 +53,7 @@ public class TablePanel {
     public int gameRound; //0- preflop, 1- flop, 2-turn, 3- river
     public int dealerPosition; //0- user, 1- AI to the left, and so on.
 
+    public boolean playersFinished, bettingFinished, blindsFininshed = false;
     public AI player1, player2, player3, player4;
     public AI players[] = new AI[4];
 
@@ -63,6 +64,17 @@ public class TablePanel {
         paint.setColor(Color.WHITE);
         paint.setTextSize(100f);
         counter = 0;
+
+        card1 = 52;
+        card2 = 52;
+        flop1 = 52;
+        flop2 = 52;
+        flop3 = 52;
+        turn = 52;
+        river = 52;
+        cardsDealt.clear();
+        gameRound = 0;
+        blindsFininshed = false;
 
         deviceHeight = Display.device.heightPixels;
         deviceWidth = Display.device.widthPixels;
@@ -88,57 +100,98 @@ public class TablePanel {
         flopx = deviceWidth/2-cardwidth*5/2;
         turnx = deviceWidth/2+ cardwidth/2;
         riverx = deviceWidth/2+ cardwidth*3/2;
-        dealerPosition = (int)(Math.random() * 6); // 0 to 5
+        dealerPosition = rand.nextInt(6); // 0 to 5
         gameRound = 0;
     }
     public void update(){
+        if(player1.finished){
+            playersFinished = true;
+        }
+        else playersFinished = false;
         counter++;
         if(counter % 30 == 0){
-            v.vibrate(150);
+           //v.vibrate(150);
         }
 
         if (gameRound == 0) {
-            card1= deal();
-            card2 = deal();
-            switch(dealerPosition){
-                case 0:
-                    player1.takeSmallBlind();
-                    player2.takeBigBlind();
-
-                    //user input
-                    player1.update(gameRound, 0);
-                    player2.update(gameRound, 0);
-                    player3.update(gameRound, 0);
-                    player4.update(gameRound, 0);
-                    break;
-                case 1:
-                    player2.takeSmallBlind();
-                    player3.takeBigBlind();
-
-                    player4.update(gameRound, 0);
-                    //user input
-                    player1.update(gameRound, 0);
-                    player2.update(gameRound, 0);
-                    player3.update(gameRound, 0);
-                    break;
+            if(!blindsFininshed){
+                card1= deal();
+                card2 = deal();
+                blinds();
+                blindsFininshed = true;
             }
-
-            //preflop
-            gameRound++;
+            if(!bettingFinished) {
+                betting(gameRound);
+                if(playersFinished){
+                    bettingFinished = true;
+                }
+            }
+            if(bettingFinished) {
+                flop1 = deal();
+                flop2 = deal();
+                flop3 = deal();
+                player1.finished = false;
+                //preflop
+                bettingFinished = false;
+                gameRound++;
+            }
         }
         else if( gameRound == 1){
             //flop
-            gameRound++;
+            if(!bettingFinished){
+                betting(gameRound);
+                if(playersFinished){
+                    bettingFinished = true;
+                }
+            }
+            if(bettingFinished){
+                turn = deal();
+                bettingFinished = false;
+                gameRound++;
+            }
         }
         else if( gameRound == 2){
             //turn
-            gameRound++;
+            if(!bettingFinished){
+                betting(gameRound);
+                if(playersFinished){
+                    bettingFinished = true;
+                }
+            }
+            if(bettingFinished){
+                river = deal();
+                bettingFinished = false;
+                gameRound++;
+            }
         }
         else if( gameRound == 3){
             //river
-            card1 = 52;
-            card2 = 52;
-            gameRound = 0;
+            if(!bettingFinished){
+                betting(gameRound);
+                if(playersFinished){
+                    bettingFinished = true;
+                }
+            }
+            if(bettingFinished) {
+                //determine winnner
+                bettingFinished = false;
+                card1 = 52;
+                card2 = 52;
+
+                flop1 = 52;
+                flop2 = 52;
+                flop3 = 52;
+                turn = 52;
+                river = 52;
+                cardsDealt.clear();
+                gameRound = 0;
+                blindsFininshed = false;
+
+                dealerPosition++;
+                if (dealerPosition == 4) {
+                    dealerPosition = 0;
+                }
+            }
         }
     }
     public void draw(Canvas canvas){
@@ -147,30 +200,32 @@ public class TablePanel {
         canvas.drawBitmap(pauseButton, px, py, null);
         if (gameRound == 0) {
             //preflop
+            canvas.drawBitmap(cardloader.get(card1), pocket1, pocketHeight, null);
+            canvas.drawBitmap(cardloader.get(card2), pocket2, pocketHeight, null);
         }
         else if( gameRound == 1){
-            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), flopx, communityHeight, null);
-            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), flopx+cardwidth, communityHeight, null);
-            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), flopx+cardwidth*2, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(flop1), flopx, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(flop2), flopx+cardwidth, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(flop3), flopx+cardwidth*2, communityHeight, null);
             canvas.drawBitmap(cardloader.get(card1), pocket1, pocketHeight, null);
             canvas.drawBitmap(cardloader.get(card2), pocket2, pocketHeight, null);
             //flop
         }
         else if( gameRound == 2){
-            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), flopx, communityHeight, null);
-            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), flopx+cardwidth, communityHeight, null);
-            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), flopx+cardwidth*2, communityHeight, null);
-            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), turnx, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(flop1), flopx, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(flop2), flopx+cardwidth, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(flop3), flopx+cardwidth*2, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(turn), turnx, communityHeight, null);
             canvas.drawBitmap(cardloader.get(card1), pocket1, pocketHeight, null);
             canvas.drawBitmap(cardloader.get(card2), pocket2, pocketHeight, null);
             //turn
         }
         else if( gameRound == 3){
-            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), flopx, communityHeight, null);
-            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), flopx+cardwidth, communityHeight, null);
-            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), flopx+cardwidth*2, communityHeight, null);
-            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), turnx, communityHeight, null);
-            canvas.drawBitmap(cardloader.get(rand.nextInt(52)), riverx, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(flop1), flopx, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(flop2), flopx+cardwidth, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(flop3), flopx+cardwidth*2, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(turn), turnx, communityHeight, null);
+            canvas.drawBitmap(cardloader.get(river), riverx, communityHeight, null);
             canvas.drawBitmap(cardloader.get(card1), pocket1, pocketHeight, null);
             canvas.drawBitmap(cardloader.get(card2), pocket2, pocketHeight, null);
             //river
@@ -185,6 +240,117 @@ public class TablePanel {
         }
         cardsDealt.add(temp);
         return temp;
+    }
+    public void takeBigBlind(){
+        money--;
+        money--;
+    }
+    public void takeSmallBlind(){
+        money--;
+    }
+    public void blinds(){
+        switch(dealerPosition){
+            case 0:
+                player1.takeSmallBlind();
+                player2.takeBigBlind();
+                break;
+            case 1:
+                player2.takeSmallBlind();
+                player3.takeBigBlind();
+                break;
+            case 2:
+                player3.takeSmallBlind();
+                player4.takeBigBlind();
+                break;
+            case 3:
+                player4.takeSmallBlind();
+                takeBigBlind();
+                break;
+            case 4:
+                takeSmallBlind();
+                player1.takeBigBlind();
+                break;
+        }
+    }
+    public void betting(int gameRound){
+        if(gameRound == 0) {
+            switch (dealerPosition) {
+                case 0:
+                    player3.update(gameRound, 0);
+                    player4.update(gameRound, 0);
+                    //user input
+                    player1.update(gameRound, 0);
+                    player2.update(gameRound, 0);
+                    break;
+                case 1:
+                    player4.update(gameRound, 0);
+                    //user input
+                    player1.update(gameRound, 0);
+                    player2.update(gameRound, 0);
+                    player3.update(gameRound, 0);
+                    break;
+                case 2:
+                    //user input
+                    player1.update(gameRound, 0);
+                    player2.update(gameRound, 0);
+                    player3.update(gameRound, 0);
+                    player4.update(gameRound, 0);
+                    break;
+                case 3:
+                    player1.update(gameRound, 0);
+                    player2.update(gameRound, 0);
+                    player3.update(gameRound, 0);
+                    player4.update(gameRound, 0);
+                    //user input
+                    break;
+                case 4:
+                    player2.update(gameRound, 0);
+                    player3.update(gameRound, 0);
+                    player4.update(gameRound, 0);
+                    //user input
+                    player1.update(gameRound, 0);
+                    break;
+            }
+        }
+        else{
+            switch (dealerPosition) {
+                case 0:
+                    player1.update(gameRound, 0);
+                    player2.update(gameRound, 0);
+                    player3.update(gameRound, 0);
+                    player4.update(gameRound, 0);
+                    //user input
+                    break;
+                case 1:
+                    player2.update(gameRound, 0);
+                    player3.update(gameRound, 0);
+                    player4.update(gameRound, 0);
+                    //user input
+                    player1.update(gameRound, 0);
+                    break;
+                case 2:
+                    player3.update(gameRound, 0);
+                    player4.update(gameRound, 0);
+                    //user input
+                    player1.update(gameRound, 0);
+                    player2.update(gameRound, 0);
+                    break;
+                case 3:
+                    player4.update(gameRound, 0);
+                    //user input
+                    player1.update(gameRound, 0);
+                    player2.update(gameRound, 0);
+                    player3.update(gameRound, 0);
+                    break;
+                case 4:
+                    //user input
+                    player1.update(gameRound, 0);
+                    player2.update(gameRound, 0);
+                    player3.update(gameRound, 0);
+                    player4.update(gameRound, 0);
+                    break;
+            }
+        }
     }
     public void imgLoad(Bitmap image) {imgloader.add(image);}
     public void cardLoad(Bitmap image) {cardloader.add(image);}
