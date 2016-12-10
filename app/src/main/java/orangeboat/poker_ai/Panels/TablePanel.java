@@ -39,11 +39,19 @@ public class TablePanel {
     private int px, py, pausebuttonX, pausebuttonY;
     public Rect rectPause;
 
+    private int cx, cy, cRadius;
+    public Rect rectCheckmark, rectWhite, rectRed, rectBlue, rectGreen, rectBlack, rectX;
+
+    private int bx, by, buttonX, buttonY;
+    public Rect rectCheck, rectCall, rectBet, rectRaise, rectFold;
+
     public int flopx, turnx, riverx, communityHeight, pocketHeight, cardwidth, pocket1, pocket2;
     public int flop1, flop2, flop3, turn, river;
     public int card1, card2;
     public int temp;
     public boolean gameEnded;
+
+    public boolean chipUIShown;
 
     public int deviceWidth, deviceHeight;
 
@@ -80,6 +88,8 @@ public class TablePanel {
         deviceWidth = Display.device.widthPixels;
         gameEnded = false;
 
+        chipUIShown = true;
+
         player1 = new Normal();
         player2 = new Stupid();
         player3 = new Fish();
@@ -96,6 +106,28 @@ public class TablePanel {
         px = (int) (deviceWidth-pausebuttonX);
         py = 0;
         rectPause = new Rect( px, py, px+pausebuttonX, py +pausebuttonY);
+
+        cRadius = imgloader.get(1).getWidth();
+        cx = cRadius;
+        cy = deviceHeight - 14*cRadius;
+        rectCheckmark = new Rect(cx, cy, cx+cRadius, cy+cRadius);
+        rectWhite = new Rect(cx, cy+cRadius*2, cx+cRadius, cy+cRadius*3);
+        rectRed = new Rect(cx, cy+cRadius*4, cx+cRadius, cy+cRadius*5);
+        rectBlue = new Rect(cx, cy+cRadius*6, cx+cRadius, cy+cRadius*7);
+        rectGreen = new Rect(cx, cy+cRadius*8, cx+cRadius, cy+cRadius*9);
+        rectBlack = new Rect(cx, cy+cRadius*10, cx+cRadius, cy+cRadius*11);
+        rectX = new Rect(cx, cy+cRadius*12, cx+cRadius, cy+cRadius*13);
+
+        buttonX = imgloader.get(6).getWidth();
+        buttonY = imgloader.get(6).getHeight();
+        bx = deviceWidth-buttonX;
+        by = deviceHeight-buttonY*10;
+        rectCheck = new Rect(bx, by, bx+buttonX, by+buttonY);
+        rectBet = new Rect( bx, by+buttonY*2, bx+buttonX, by+buttonY*3);
+        rectBet = rectCall;
+        rectRaise = new Rect(bx, by+buttonY*4, bx+buttonX, by+buttonY*5);
+        rectFold = new Rect(bx, by+buttonY*6, bx+buttonX, by+buttonY*7);
+
         cardwidth = cardloader.get(0).getWidth();
         pocketHeight = (int) (deviceHeight/1.3);
         pocket1 =  deviceWidth/2;
@@ -218,6 +250,29 @@ public class TablePanel {
         canvas.drawText(""+counter, 100,100,paint);
         canvas.drawText("Game Screen" , 200,300,paint);
         canvas.drawBitmap(pauseButton, px, py, null);
+        if(chipUIShown){
+
+            canvas.drawBitmap(imgloader.get(11), cx, cy, null);
+            canvas.drawBitmap(imgloader.get(1), cx, cy + cRadius*2, null);
+            canvas.drawBitmap(imgloader.get(2), cx, cy + cRadius*4, null);
+            canvas.drawBitmap(imgloader.get(3), cx, cy + cRadius*6, null);
+            canvas.drawBitmap(imgloader.get(4), cx , cy + cRadius*8, null);
+            canvas.drawBitmap(imgloader.get(5), cx, cy+ cRadius*10, null);
+            canvas.drawBitmap(imgloader.get(12), cx, cy + cRadius*12, null);
+           /*
+            canvas.drawRect(rectCheckmark, paint);
+            canvas.drawRect(rectWhite, paint);
+            canvas.drawRect(rectRed, paint);
+            canvas.drawRect(rectBlue, paint);
+            canvas.drawRect(rectGreen, paint);
+            canvas.drawRect(rectBlack, paint);
+            canvas.drawRect(rectX, paint);
+            */
+        }
+        canvas.drawBitmap(imgloader.get(6), bx, by, null);
+        canvas.drawBitmap(imgloader.get(8), bx, by+buttonY*2, null); //bet
+        canvas.drawBitmap(imgloader.get(9), bx, by+buttonY*4, null);
+        canvas.drawBitmap(imgloader.get(10), bx, by+buttonY*6, null);
         if (gameRound == 0) {
             //preflop
             canvas.drawBitmap(cardloader.get(card1), pocket1, pocketHeight, null);
