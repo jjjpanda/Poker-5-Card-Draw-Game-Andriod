@@ -7,32 +7,52 @@ import orangeboat.poker_ai.Card;
  */
 //Picky
 public class Fish extends AI{
-
+    public int timePassed;
     public Fish() {
         super();
         //change values
         super.bluffRate = 0;
         super.responseTime = 0;
         super.shortStackPoint = 0;
+        responseTime = 20;
+        finished = false;
     }
     @Override
     public void update(int gameRound, int dealerPosition){
-        if (gameRound == 0) {
+        if (gameRound == 0 && !finished) {
             //preflop
-            a.deal('T', 'H');
-            b.deal('9', 'S');
-            if( evaluateCards(a,b, gameRound, money) ){
-                //do action
+            timePassed++;
+            if(timePassed == responseTime){
+                timePassed = 0;
+                finished = true;
+                if( evaluateCards(a,b, gameRound, money) ){
+                    //do action
+                }
             }
         }
-        else if( gameRound == 1){
+        else if( gameRound == 1 && !finished){
             //flop
+            timePassed++;
+            if( timePassed == responseTime){
+                timePassed =0;
+                finished = true;
+            }
         }
-        else if( gameRound == 2){
+        else if( gameRound == 2 && !finished){
             //turn
+            timePassed++;
+            if( timePassed == responseTime){
+                timePassed =0;
+                finished = true;
+            }
         }
-        else if( gameRound == 3){
+        else if( gameRound == 3 && !finished){
             //river
+            timePassed++;
+            if( timePassed == responseTime){
+                timePassed =0;
+                finished = true;
+            }
         }
     }
     public boolean evaluateCards(Card a, Card b, int gameRound, int money){

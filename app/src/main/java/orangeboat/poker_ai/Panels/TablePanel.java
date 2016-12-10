@@ -104,11 +104,12 @@ public class TablePanel {
         flopx = deviceWidth/2-cardwidth*5/2;
         turnx = deviceWidth/2+ cardwidth/2;
         riverx = deviceWidth/2+ cardwidth*3/2;
-        dealerPosition = rand.nextInt(6); // 0 to 5
+        //dealerPosition = rand.nextInt(6); // 0 to 5
+        dealerPosition = 0;
         gameRound = 0;
     }
     public void update(){
-        if(player1.finished){
+        if(player1.finished && player2.finished && player3.finished && player4.finished){
             playersFinished = true;
         }
         else playersFinished = false;
@@ -129,6 +130,9 @@ public class TablePanel {
                 if(playersFinished){
                     bettingFinished = true;
                     player1.finished = false;
+                    player2.finished = false;
+                    player3.finished = false;
+                    player4.finished = false;
                 }
             }
             if (bettingFinished) {
@@ -146,6 +150,9 @@ public class TablePanel {
                 if(playersFinished){
                     bettingFinished = true;
                     player1.finished = false;
+                    player2.finished = false;
+                    player3.finished = false;
+                    player4.finished = false;
                 }
             }
             if(bettingFinished){
@@ -161,6 +168,9 @@ public class TablePanel {
                 if(playersFinished){
                     bettingFinished = true;
                     player1.finished = false;
+                    player2.finished = false;
+                    player3.finished = false;
+                    player4.finished = false;
                 }
             }
             if(bettingFinished){
@@ -176,6 +186,9 @@ public class TablePanel {
                 if(playersFinished){
                     bettingFinished = true;
                     player1.finished = false;
+                    player2.finished = false;
+                    player3.finished = false;
+                    player4.finished = false;
                 }
             }
             if(bettingFinished) {
@@ -288,78 +301,158 @@ public class TablePanel {
         if(gameRound == 0) {
             switch (dealerPosition) {
                 case 0:
-                    player3.update(gameRound, 0);
-                    player4.update(gameRound, 0);
+                    if(!player3.finished) {
+                        player3.update(gameRound, 0);
+                    }
+                    else if(!player4.finished) {
+                        player4.update(gameRound, 0);
+                    }
                     //user input
-                    player1.update(gameRound, 0);
-                    player2.update(gameRound, 0);
+                    else if(!player1.finished) {
+                        player1.update(gameRound, 0);
+                    }
+                    else if(!player2.finished) {
+                        player2.update(gameRound, 0);
+                    }
                     break;
                 case 1:
-                    player4.update(gameRound, 0);
+                    if(!player4.finished) {
+                        player4.update(gameRound, 1);
+                    }
                     //user input
-                    player1.update(gameRound, 0);
-                    player2.update(gameRound, 0);
-                    player3.update(gameRound, 0);
+                    else if(!player1.finished) {
+                        player1.update(gameRound, 1);
+                    }
+                    else if(!player2.finished) {
+                        player2.update(gameRound, 1);
+                    }
+                    else if(!player3.finished) {
+                        player3.update(gameRound, 1);
+                    }
                     break;
                 case 2:
                     //user input
-                    player1.update(gameRound, 0);
-                    player2.update(gameRound, 0);
-                    player3.update(gameRound, 0);
-                    player4.update(gameRound, 0);
+                    if(!player1.finished) {
+                        player1.update(gameRound, 2);
+                    }
+                    else if(!player2.finished) {
+                        player2.update(gameRound, 2);
+                    }
+                    else if(!player3.finished) {
+                        player3.update(gameRound, 2);
+                    }
+                    else if(!player4.finished) {
+                        player4.update(gameRound, 2);
+                    }
                     break;
                 case 3:
-                    player1.update(gameRound, 0);
-                    player2.update(gameRound, 0);
-                    player3.update(gameRound, 0);
-                    player4.update(gameRound, 0);
+                    if(!player1.finished) {
+                        player1.update(gameRound, 3);
+                    }
+                    else if(!player2.finished) {
+                        player2.update(gameRound, 3);
+                    }
+                    else if(!player3.finished) {
+                        player3.update(gameRound, 3);
+                    }
+                    else if(!player4.finished) {
+                        player4.update(gameRound, 3);
+                    }
                     //user input
                     break;
                 case 4:
-                    player2.update(gameRound, 0);
-                    player3.update(gameRound, 0);
-                    player4.update(gameRound, 0);
+                    if(!player2.finished) {
+                        player2.update(gameRound, 4);
+                    }
+                    else if(!player3.finished) {
+                        player3.update(gameRound, 4);
+                    }
+                    else if(!player4.finished) {
+                        player4.update(gameRound, 4);
+                    }
                     //user input
-                    player1.update(gameRound, 0);
+                    else if(!player1.finished) {
+                        player1.update(gameRound, 4);
+                    }
                     break;
             }
         }
         else{
             switch (dealerPosition) {
                 case 0:
-                    player1.update(gameRound, 0);
-                    player2.update(gameRound, 0);
-                    player3.update(gameRound, 0);
-                    player4.update(gameRound, 0);
+                    if(!player1.finished) {
+                        player1.update(gameRound, 3);
+                    }
+                    else if(!player2.finished) {
+                        player2.update(gameRound, 3);
+                    }
+                    else if(!player3.finished) {
+                        player3.update(gameRound, 3);
+                    }
+                    else if(!player4.finished) {
+                        player4.update(gameRound, 3);
+                    }
                     //user input
                     break;
                 case 1:
-                    player2.update(gameRound, 0);
-                    player3.update(gameRound, 0);
-                    player4.update(gameRound, 0);
+                    if(!player2.finished) {
+                        player2.update(gameRound, 4);
+                    }
+                    else if(!player3.finished) {
+                        player3.update(gameRound, 4);
+                    }
+                    else if(!player4.finished) {
+                        player4.update(gameRound, 4);
+                    }
                     //user input
-                    player1.update(gameRound, 0);
+                    else if(!player1.finished) {
+                        player1.update(gameRound, 4);
+                    }
                     break;
                 case 2:
-                    player3.update(gameRound, 0);
-                    player4.update(gameRound, 0);
+                    if(!player3.finished) {
+                        player3.update(gameRound, 0);
+                    }
+                    else if(!player4.finished) {
+                        player4.update(gameRound, 0);
+                    }
                     //user input
-                    player1.update(gameRound, 0);
-                    player2.update(gameRound, 0);
+                    else if(!player1.finished) {
+                        player1.update(gameRound, 0);
+                    }
+                    else if(!player2.finished) {
+                        player2.update(gameRound, 0);
+                    }
                     break;
                 case 3:
-                    player4.update(gameRound, 0);
+                    if(!player4.finished) {
+                        player4.update(gameRound, 1);
+                    }
                     //user input
-                    player1.update(gameRound, 0);
-                    player2.update(gameRound, 0);
-                    player3.update(gameRound, 0);
+                    else if(!player1.finished) {
+                        player1.update(gameRound, 1);
+                    }
+                    else if(!player2.finished) {
+                        player2.update(gameRound, 1);
+                    }
+                    else if(!player3.finished) {
+                        player3.update(gameRound, 1);
+                    }
                     break;
                 case 4:
                     //user input
-                    player1.update(gameRound, 0);
-                    player2.update(gameRound, 0);
-                    player3.update(gameRound, 0);
-                    player4.update(gameRound, 0);
+                    if(!player1.finished) {
+                        player1.update(gameRound, 3);
+                    }
+                    else if(!player2.finished) {
+                        player2.update(gameRound, 3);
+                    }
+                    else if(!player3.finished) {
+                        player3.update(gameRound, 3);
+                    }
+                    else if(!player4.finished) {
+                        player4.update(gameRound, 3);
+                    }
                     break;
             }
         }
