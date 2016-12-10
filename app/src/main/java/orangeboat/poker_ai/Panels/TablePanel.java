@@ -53,7 +53,8 @@ public class TablePanel {
     public int gameRound; //0- preflop, 1- flop, 2-turn, 3- river
     public int dealerPosition; //0- user, 1- AI to the left, and so on.
 
-    public boolean playersFinished, bettingFinished, blindsFininshed = false;
+    public boolean playersFinished, bettingFinished, blindsFininshed;
+
     public AI player1, player2, player3, player4;
     public AI players[] = new AI[4];
 
@@ -74,7 +75,6 @@ public class TablePanel {
         river = 52;
         cardsDealt.clear();
         gameRound = 0;
-        blindsFininshed = false;
 
         deviceHeight = Display.device.heightPixels;
         deviceWidth = Display.device.widthPixels;
@@ -84,6 +84,10 @@ public class TablePanel {
         player2 = new Stupid();
         player3 = new Fish();
         player4 = new Smart();
+
+        playersFinished = false;
+        bettingFinished = false;
+        blindsFininshed = false;
 
         pauseButton = imgloader.get(0);
 
@@ -108,32 +112,31 @@ public class TablePanel {
             playersFinished = true;
         }
         else playersFinished = false;
+
         counter++;
         if(counter % 30 == 0){
-           //v.vibrate(150);
+            //v.vibrate(150);
         }
 
         if (gameRound == 0) {
-            if(!blindsFininshed){
-                card1= deal();
+            if (!blindsFininshed) {
+                card1 = deal();
                 card2 = deal();
                 blinds();
-                blindsFininshed = true;
             }
-            if(!bettingFinished) {
+            if (!bettingFinished) {
                 betting(gameRound);
                 if(playersFinished){
                     bettingFinished = true;
+                    player1.finished = false;
                 }
             }
-            if(bettingFinished) {
+            if (bettingFinished) {
                 flop1 = deal();
                 flop2 = deal();
                 flop3 = deal();
-                player1.finished = false;
-                //preflop
-                bettingFinished = false;
                 gameRound++;
+                bettingFinished = false;
             }
         }
         else if( gameRound == 1){
@@ -142,6 +145,7 @@ public class TablePanel {
                 betting(gameRound);
                 if(playersFinished){
                     bettingFinished = true;
+                    player1.finished = false;
                 }
             }
             if(bettingFinished){
@@ -156,6 +160,7 @@ public class TablePanel {
                 betting(gameRound);
                 if(playersFinished){
                     bettingFinished = true;
+                    player1.finished = false;
                 }
             }
             if(bettingFinished){
@@ -170,11 +175,13 @@ public class TablePanel {
                 betting(gameRound);
                 if(playersFinished){
                     bettingFinished = true;
+                    player1.finished = false;
                 }
             }
             if(bettingFinished) {
                 //determine winnner
                 bettingFinished = false;
+
                 card1 = 52;
                 card2 = 52;
 
@@ -207,6 +214,7 @@ public class TablePanel {
             canvas.drawBitmap(cardloader.get(flop1), flopx, communityHeight, null);
             canvas.drawBitmap(cardloader.get(flop2), flopx+cardwidth, communityHeight, null);
             canvas.drawBitmap(cardloader.get(flop3), flopx+cardwidth*2, communityHeight, null);
+
             canvas.drawBitmap(cardloader.get(card1), pocket1, pocketHeight, null);
             canvas.drawBitmap(cardloader.get(card2), pocket2, pocketHeight, null);
             //flop
@@ -216,6 +224,7 @@ public class TablePanel {
             canvas.drawBitmap(cardloader.get(flop2), flopx+cardwidth, communityHeight, null);
             canvas.drawBitmap(cardloader.get(flop3), flopx+cardwidth*2, communityHeight, null);
             canvas.drawBitmap(cardloader.get(turn), turnx, communityHeight, null);
+
             canvas.drawBitmap(cardloader.get(card1), pocket1, pocketHeight, null);
             canvas.drawBitmap(cardloader.get(card2), pocket2, pocketHeight, null);
             //turn
@@ -226,6 +235,7 @@ public class TablePanel {
             canvas.drawBitmap(cardloader.get(flop3), flopx+cardwidth*2, communityHeight, null);
             canvas.drawBitmap(cardloader.get(turn), turnx, communityHeight, null);
             canvas.drawBitmap(cardloader.get(river), riverx, communityHeight, null);
+
             canvas.drawBitmap(cardloader.get(card1), pocket1, pocketHeight, null);
             canvas.drawBitmap(cardloader.get(card2), pocket2, pocketHeight, null);
             //river
@@ -271,6 +281,8 @@ public class TablePanel {
                 player1.takeBigBlind();
                 break;
         }
+        blindsFininshed = true;
+        bettingFinished = false;
     }
     public void betting(int gameRound){
         if(gameRound == 0) {
