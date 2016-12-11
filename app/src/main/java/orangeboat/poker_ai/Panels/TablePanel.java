@@ -14,6 +14,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import orangeboat.poker_ai.Display;
@@ -34,6 +35,7 @@ public class TablePanel{
     ArrayList<Bitmap> imgloader = new ArrayList<>();
     ArrayList<Bitmap> cardloader = new ArrayList<>(); //C 0-12, H 13-25, S 26-38,  D 39-51 , A-K
     int[] cardVals = {0,0,0,0,0,0,0,0,0,0,0,0,0};
+    int []cards = {-1,-1,-1,-1,-1,-1,-1};
     ArrayList<MediaPlayer> sfxloader = new ArrayList<>();
     ArrayList<Integer> cardsDealt = new ArrayList<>();
 
@@ -257,6 +259,7 @@ public class TablePanel{
         canvas.drawText(""+money, 100,100,paint);
         canvas.drawText(""+pot , 200,700,paint);
         canvas.drawBitmap(pauseButton, px, py, null);
+
         if(chipUIShown){
             //draw poker chips
             canvas.drawBitmap(imgloader.get(11), cx, cy, null);
@@ -546,12 +549,134 @@ public class TablePanel{
     public void upTouch(int x, int y,int pointerNumber) {
 
     }
+
+    /*
     public String analyzeHand(){
-        int[] cards = {card1%13, card2%13, flop1%13, flop2%13, flop3%13, turn%13, river%13};
+        int pairCounter = 0, tripCounter = 0;
+        int[] pairVals = {-1, -1, -1};
+        int[] tripVals = {-1,-1};
+        int quadVals = -1;
+        int straightVal = -1;
+        if(gameRound == 1){
+            cards[0] = card1%13;
+            cards[1] = card2%13;
+            cards[2] = flop1%13;
+            cards[3] = flop2%13;
+            cards[4] = flop3%13;
+        }
+        if(gameRound == 2){
+            cards[0] = card1%13;
+            cards[1] = card2%13;
+            cards[2] = flop1%13;
+            cards[3] = flop2%13;
+            cards[4] = flop3%13;
+            cards[5] = turn%13;
+        }
+        if(gameRound == 3){
+            cards[0] = card1%13;
+            cards[1] = card2%13;
+            cards[2] = flop1%13;
+            cards[3] = flop2%13;
+            cards[4] = flop3%13;
+            cards[5] = turn%13;
+            cards[6] = river%13;
+        }
+
         for(int num : cards){
             cardVals[num]++;
         }
-        return cardVals.toString();
-    }
+        for( int i = 0; i < 13 ; i++){
+            if(cardVals[i]== 2){
+                pairCounter++;
+                pairVals[pairCounter - 1] = i;
+            }
+            if(cardVals[i] == 3){
+                tripCounter++;
+                tripVals[tripCounter - 1] = i;
+            }
+            if(cardVals[i] == 4){
+                quadVals = i;
+            }
+        }
+        for ( int i = 0; i < 9; i++){
+            if( cardVals[i] > 0 && cardVals[i+1] > 0 && cardVals[i+2] > 0 && cardVals[i+3] > 0  && cardVals[i+4] > 0){
+                straightVal = i+4;
+                if (straightVal == 12 && cardVals[0] > 0 ){
+                    straightVal = 0; //ace high straight
+                }
+            }
+        }
+        Arrays.sort(tripVals);
+        Arrays.sort(pairVals);
 
+        for( int i = 0; i < 7; i++){
+            cards[i] = -1;
+        }
+        for( int i = 0; i < 13; i++){
+            cardVals[i] = 0;
+        }
+        if(straightVal == 0 && hasFlush()){
+            return "royal Flush";
+        }
+        else if( straightVal > 0 && hasFlush()){
+            return "straight flush "+(straightVal)+" high";
+        }
+        else if( quadVals > 0){
+            return "quads " + quadVals + " high";
+        }
+        else if( tripCounter > 0 && pairCounter > 0 ){
+            return tripVals[1] + " Full of " + pairVals[2];
+        }
+        return "";
+
+    }
+    public boolean hasFlush(){
+        int clubs = 0, spades = 0, hearts = 0, diamonds = 0;
+        if(gameRound == 1){
+            cards[0] = card1;
+            cards[1] = card2;
+            cards[2] = flop1 ;
+            cards[3] = flop2 ;
+            cards[4] = flop3 ;
+        }
+        if(gameRound == 2){
+            cards[0] = card1 ;
+            cards[1] = card2 ;
+            cards[2] = flop1 ;
+            cards[3] = flop2 ;
+            cards[4] = flop3 ;
+            cards[5] = turn ;
+        }
+        if(gameRound == 3){
+            cards[0] = card1 ;
+            cards[1] = card2 ;
+            cards[2] = flop1 ;
+            cards[3] = flop2 ;
+            cards[4] = flop3 ;
+            cards[5] = turn ;
+            cards[6] = river ;
+        }
+        for( int num: cards ){
+            if( num > 0 && num <= 12){
+                clubs++;
+            }
+            else if( num > 12 && num <= 25){
+                hearts++;
+            }
+            else if( num > 25 && num <= 38){
+                spades++;
+            }
+            else if( num > 38 && num <= 51){
+                diamonds++;
+            }
+        }
+        for( int i = 0; i < 7; i++){
+            cards[i] = -1;
+        }
+        if( clubs >= 5 || hearts >= 5 || spades >= 5 || diamonds >= 5){
+            return true;
+        }
+        return false;
+    }
+    */
 }
