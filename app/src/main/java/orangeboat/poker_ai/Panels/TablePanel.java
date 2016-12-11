@@ -8,6 +8,10 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.os.Vibrator;
+import android.support.v4.view.MotionEventCompat;
+import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,14 +26,14 @@ import orangeboat.poker_ai.Players.Stupid;
 /**
  * Created by jawpa on 12/6/2016.
  */
-public class TablePanel {
+public class TablePanel{
 
     Paint paint = new Paint();
-
     Random rand = new Random(System.currentTimeMillis());
     Vibrator v;
     ArrayList<Bitmap> imgloader = new ArrayList<>();
     ArrayList<Bitmap> cardloader = new ArrayList<>(); //C 0-12, H 13-25, S 26-38,  D 39-51 , A-K
+    int[] cardVals = {0,0,0,0,0,0,0,0,0,0,0,0,0};
     ArrayList<MediaPlayer> sfxloader = new ArrayList<>();
     ArrayList<Integer> cardsDealt = new ArrayList<>();
 
@@ -46,7 +50,6 @@ public class TablePanel {
     public int flopx, turnx, riverx, communityHeight, pocketHeight, cardwidth, pocket1, pocket2;
     public int flop1, flop2, flop3, turn, river;
     public int card1, card2;
-    public int temp;
     public boolean gameEnded;
 
     public boolean chipUIShown;
@@ -54,7 +57,6 @@ public class TablePanel {
     public int deviceWidth, deviceHeight;
 
     public int money, pot, forwardBet, bigblind;
-    public void setMoney(int money) {this.money = money;}
 
     public int gameRound; //0- preflop, 1- flop, 2-turn, 3- river
     public int dealerPosition; //0- user, 1- AI to the left, and so on.
@@ -89,7 +91,7 @@ public class TablePanel {
         deviceWidth = Display.device.widthPixels;
         gameEnded = false;
 
-        chipUIShown = true;
+        chipUIShown= false;
 
         player1 = new Normal();
         player2 = new Stupid();
@@ -125,7 +127,7 @@ public class TablePanel {
         by = deviceHeight-buttonY*10;
         rectCheck = new Rect(bx, by, bx+buttonX, by+buttonY);
         rectBet = new Rect( bx, by+buttonY*2, bx+buttonX, by+buttonY*3);
-        rectBet = rectCall;
+        rectBet =  new Rect( bx, by+buttonY*2, bx+buttonX, by+buttonY*3);
         rectRaise = new Rect(bx, by+buttonY*4, bx+buttonX, by+buttonY*5);
         rectFold = new Rect(bx, by+buttonY*6, bx+buttonX, by+buttonY*7);
 
@@ -241,6 +243,9 @@ public class TablePanel {
                 dealerPosition++;
                 if (dealerPosition == 4) {
                     dealerPosition = 0;
+                }
+                for(int i = 0; i<cardVals.length; i++){
+                    cardVals[i] = 0;
                 }
             }
         }
@@ -527,9 +532,25 @@ public class TablePanel {
     public void cardLoad(Bitmap image) {cardloader.add(image);}
     public void sfxLoad(MediaPlayer sfx){ sfxloader.add(sfx);}
     public void downTouch(int x, int y, int pointerNumber) {
-
+        System.out.print("jhjggfhdfdgdsfsd");
+        if(rectBet != null && rectRaise != null && rectX != null) {
+            if (rectBet.contains(x, y) || rectRaise.contains(x, y)) {
+                chipUIShown = true;
+            }
+            if (rectX.contains(x, y)) {
+                chipUIShown = false;
+            }
+        }
     }
     public void upTouch(int x, int y,int pointerNumber) {
 
     }
+    public String analyzeHand(){
+        int[] cards = {card1%13, card2%13, flop1%13, flop2%13, flop3%13, turn%13, river%13};
+        for(int num : cards){
+            cardVals[num]++;
+        }
+        return cardVals.toString();
+    }
+
 }
