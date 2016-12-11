@@ -258,7 +258,7 @@ public class TablePanel{
         canvas.drawText(""+pot , 200,700,paint);
         canvas.drawBitmap(pauseButton, px, py, null);
         if(chipUIShown){
-
+            //draw poker chips
             canvas.drawBitmap(imgloader.get(11), cx, cy, null);
             canvas.drawBitmap(imgloader.get(1), cx, cy + cRadius*2, null);
             canvas.drawBitmap(imgloader.get(2), cx, cy + cRadius*4, null);
@@ -280,6 +280,7 @@ public class TablePanel{
         canvas.drawBitmap(imgloader.get(8), bx, by+buttonY*2, null); //bet
         canvas.drawBitmap(imgloader.get(9), bx, by+buttonY*4, null);
         canvas.drawBitmap(imgloader.get(10), bx, by+buttonY*6, null);
+
         if (gameRound == 0) {
             //preflop
             canvas.drawBitmap(cardloader.get(card1), pocket1, pocketHeight, null);
